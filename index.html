@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Landing Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #000;
+            background-color: #39ff14;
+            box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 1rem 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+
+        .trail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        /* Add styles for the footer */
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            font-size: 20px;
+            margin: 0 10px;
+            color: #fff;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="newcascading.html">Sample Designs</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <img src="images/ddrose2.jpg" alt="Hero Image" class="hero-image" style="max-width: 500px; width: 100%; height: auto;">
+        <h1>Web Designer / Developer</h1>
+        <p>David Rose</p>
+    </section>
+
+    <canvas class="trail"></canvas>
+    <!-- Footer -->
+     <footer>
+        <p>Created by David Rose, 607-244-0502, E-Mail: <a href="mailto:dvdrose999@gmail.com">dvdrose999@gmail.com</a></p>
+        <div class="social-icons">
+            <a href="https://x.com/Daves_NFTs_" target="_blank"><img src="images/twitter.png" alt="Twitter"></a>
+            <a href="https://www.linkedin.com/in/dave-rose-510a48268/" target="_blank"><img src="images/linkedin.png" alt="LinkedIn"></a>
+            <a href="https://www.pinterest.com/dvdrose61365/" target="_blank"><img src="images/pinterest.png" alt="Pinterest"></a>
+            <a href="https://github.com/dvdrose2" target="_blank"><img src="images/github.png" alt="Pinterest"></a>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            navUl.classList.toggle('show');
+        });
+
+        // Mouse trail effect
+        const canvas = document.querySelector('.trail');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.1) this.size -= 0.1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].size <= 0.3) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function createParticles(e) {
+            const xPos = e.x;
+            const yPos = e.y;
+            for (let i = 0; i < 5; i++) {
+                particles.push(new Particle(xPos, yPos));
+            }
+        }
+
+        let animationId;
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            createParticles(e);
+            if (!animationId) {
+                animate();
+            }
+        });
+
+        window.addEventListener('mouseout', () => {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        });
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>

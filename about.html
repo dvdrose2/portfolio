@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Cube Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+         body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #cube-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .trail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #000;
+            background-color: #39ff14;
+            box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+        .toper h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .toper p {
+            font-size: 1.5rem;
+            color: indianred;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 2rem;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 300px;
+            margin: 1rem;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 1rem 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+
+        .trail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        /* Add styles for the footer */
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            font-size: 20px;
+            margin: 0 10px;
+            color: #fff;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="newcascading.html">Sample Designs</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+    <section class="toper">
+    <div>
+        <br><br><br><br><br><br>
+        <center><h1>3D About Me Box</h1>
+        <p>Drag box to turn, click on copy to read more.</p></center>
+    </div></section>
+
+    <section class="hero">
+        <div id="cube-container"></div>
+    </section>
+
+    <canvas class="trail"></canvas>
+
+    <!-- Footer -->
+    <footer>
+        <p>Created by David Rose, 607-244-0502, E-Mail: <a href="mailto:dvdrose999@gmail.com">dvdrose999@gmail.com</a></p>
+        <div class="social-icons">
+            <a href="https://x.com/Daves_NFTs_" target="_blank"><img src="images/twitter.png" alt="Twitter"></a>
+            <a href="https://www.linkedin.com/in/dave-rose-510a48268/" target="_blank"><img src="images/linkedin.png" alt="LinkedIn"></a>
+            <a href="https://www.pinterest.com/dvdrose61365/" target="_blank"><img src="images/pinterest.png" alt="Pinterest"></a>
+            <a href="https://github.com/dvdrose2" target="_blank"><img src="images/github.png" alt="Pinterest"></a>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            navUl.classList.toggle('show');
+        });
+
+        // Mouse trail effect
+        const canvas = document.querySelector('.trail');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.1) this.size -= 0.1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].size <= 0.3) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function createParticles(e) {
+            const xPos = e.clientX;
+            const yPos = e.clientY;
+            for (let i = 0; i < 5; i++) {
+                particles.push(new Particle(xPos, yPos));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('mousemove', createParticles);
+        animateParticles();
+        // Three.js setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('cube-container').appendChild(renderer.domElement);
+
+        // Create cube geometry and materials
+        const geometry = new THREE.BoxGeometry(3, 3, 3);
+        const materials = Array(6).fill().map(() => 
+            new THREE.MeshPhongMaterial({ color: 0xFFC0CB })
+        );
+        const cube = new THREE.Mesh(geometry, materials);
+        scene.add(cube);
+
+        // Lighting setup
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        // Green glow effect
+        const glowGeometry = new THREE.SphereGeometry(4, 32, 32);
+        const glowMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                coefficient: { value: 0.5 },
+                power: { value: 2 },
+                glowColor: { value: new THREE.Color(0x39ff14) }
+            },
+            vertexShader: `
+                varying vec3 vNormal;
+                void main() {
+                    vNormal = normalize(normalMatrix * normal);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float coefficient;
+                uniform float power;
+                uniform vec3 glowColor;
+                varying vec3 vNormal;
+                void main() {
+                    float intensity = pow(coefficient - dot(vNormal, vec3(0.0, 0.0, 1.0)), power);
+                    gl_FragColor = vec4(glowColor, intensity);
+                }
+            `,
+            side: THREE.BackSide,
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+
+        const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+        scene.add(glowMesh);
+
+        camera.position.z = 7;
+
+        // Define cube faces content
+        const cubeFaces = [
+            { heading: "Welcome", tagline: "My Name is David Rose", alert: "Thank you for checking out my Site!" },
+            { heading: "About Me", tagline: "Learn My Story", alert: "Love coding and design. Still learning on my way to Mastering" },
+            { heading: "Skills", tagline: "Here is my list.", alert: "HTML, CSS Bootstrap Studio, Javascript, React, Vue, Figma, Penpot" },
+            { heading: "Contact", tagline: "Get in touch", alert: "Call me at: 607-244-0502" },
+            { heading: "Programs", tagline: "Applications that I know", alert: "Photoshop, Illustrator, InDesing, After Effects, Adobe Acrobat Pro, Blender" },
+            { heading: "E-Mail", tagline: "Here is my email", alert: "dvdrose999@gmail.com" }
+        ];
+
+        // Create textures for cube faces
+        cubeFaces.forEach((face, index) => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+            
+            // Draw face background
+            context.fillStyle = 'rgba(255, 192, 203, 1)';
+            context.fillRect(0, 0, 512, 512);
+            
+            // Draw heading
+            context.font = 'bold 48px Arial';
+            context.fillStyle = 'black';
+            context.textAlign = 'center';
+            context.fillText(face.heading, 256, 200);
+            
+            // Draw tagline
+            context.font = '24px Arial';
+            context.fillText(face.tagline, 256, 250);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            materials[index].map = texture;
+            materials[index].needsUpdate = true;
+        });
+
+        // Raycaster for click detection
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        // Click event handler
+        renderer.domElement.addEventListener('click', (event) => {
+            // Calculate mouse position in normalized device coordinates
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // Update the picking ray with the camera and mouse position
+            raycaster.setFromCamera(mouse, camera);
+
+            // Calculate objects intersecting the picking ray
+            const intersects = raycaster.intersectObject(cube);
+
+            if (intersects.length > 0) {
+                // Get the face index that was clicked
+                const faceIndex = Math.floor(intersects[0].faceIndex / 2);
+                alert(cubeFaces[faceIndex].alert);
+            }
+        });
+
+        // Rotation controls
+        let targetRotation = { x: 0, y: 0 };
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        renderer.domElement.addEventListener('mousedown', (event) => {
+            isDragging = true;
+            previousMousePosition = {
+                x: event.clientX,
+                y: event.clientY
+            };
+        });
+
+        renderer.domElement.addEventListener('mousemove', (event) => {
+            if (isDragging) {
+                const deltaMove = {
+                    x: event.clientX - previousMousePosition.x,
+                    y: event.clientY - previousMousePosition.y
+                };
+
+                targetRotation.x += deltaMove.y * 0.01;
+                targetRotation.y += deltaMove.x * 0.01;
+
+                previousMousePosition = {
+                    x: event.clientX,
+                    y: event.clientY
+                };
+            }
+        });
+
+        renderer.domElement.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smooth rotation
+            cube.rotation.x += (targetRotation.x - cube.rotation.x) * 0.1;
+            cube.rotation.y += (targetRotation.y - cube.rotation.y) * 0.1;
+
+            // Update glow mesh rotation to match cube
+            glowMesh.rotation.x = cube.rotation.x;
+            glowMesh.rotation.y = cube.rotation.y;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

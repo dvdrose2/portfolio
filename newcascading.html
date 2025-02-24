@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - 3D Carousel with GSAP FLIP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<style>
+  @font-face {
+  font-family: "Untitled";
+  src: url(https://assets.codepen.io/1600187/untitled-sans-regular.woff2) format("woff2");
+  font-weight: 400;
+}
+body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+         nav {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #000;
+            background-color: #39ff14;
+            box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-image {
+  width: 50%; /* Makes the image half its original size */
+  max-width: 100%; /* Ensures the image doesn't exceed its container */
+  height: auto; /* Maintains aspect ratio */
+}
+
+@media only screen and (max-width: 568px) {
+  .hero-image {
+    width: 50%; /* Makes the image full width on smaller screens */
+  }
+}
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 1rem 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+
+        .trail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+
+.spacer {
+  height: 20vh;
+  z-index: 0;
+  text-align: center;
+}
+
+.intro {
+  display: grid;
+  place-content: center;
+}
+@-webkit-keyframes bounce {
+  from {
+    transform: translateY(-10%);
+  }
+  to {
+    transform: translateY(10%);
+  }
+}
+@keyframes bounce {
+  from {
+    transform: translateY(-10%);
+  }
+  to {
+    transform: translateY(10%);
+  }
+}
+.intro svg {
+  width: 86px;
+}
+.intro span {
+  display: inline-block;
+  -webkit-animation: bounce 1s alternate infinite ease-in-out;
+          animation: bounce 1s alternate infinite ease-in-out;
+}
+
+.container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.wrapper {
+  z-index: 1;
+  perspective: 1800px;
+  perspective-origin: center -300px;
+  transform-style: preserve-3d;
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  pointer-events: none;
+  display: grid;
+  place-content: center;
+}
+
+.spin-me {
+  position: absolute;
+  bottom: calc(20vh + 15px);
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.rolo {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  top: 10%;
+  left: 50%;
+  transform-style: preserve-3d;
+  transform-origin: center left;
+}
+
+.item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  aspect-ratio: 3/2;
+  width: 450px;
+  z-index: 1;
+  pointer-events: all;
+  background: #777;
+  transform-style: preserve-3d;
+}
+.item.active-item {
+  z-index: 2;
+}
+.active .item {
+  pointer-events: none;
+}
+.item .card-text {
+  z-index: 1;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 20px;
+  background: #fff;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  transform: translateZ(0px);
+}
+.item .card-text--back {
+  transform: translateZ(-1px) rotatey(180deg);
+  background: #fff;
+}
+.item img {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top center;
+     object-position: top center;
+  z-index: 0;
+}
+
+.modal {
+  cursor: zoom-out;
+  position: fixed;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-backdrop-filter: blur(0) grayscale(0);
+          backdrop-filter: blur(0) grayscale(0);
+  pointer-events: none;
+  z-index: 3;
+}
+.modal.active {
+  display: flex;
+  opacity: 1;
+  pointer-events: all;
+  background-color: rgba(0, 0, 0, 0.69);
+  -webkit-backdrop-filter: blur(5px) grayscale(100%);
+          backdrop-filter: blur(5px) grayscale(100%);
+  transition: background-color 0.2s ease-in, -webkit-backdrop-filter 0.2s ease;
+  transition: background-color 0.2s ease-in, backdrop-filter 0.2s ease;
+  transition: background-color 0.2s ease-in, backdrop-filter 0.2s ease, -webkit-backdrop-filter 0.2s ease;
+}
+.modal .modal-image {
+  aspect-ratio: 16/9;
+  width: 90%;
+  max-width: 1260px;
+  background: #eee;
+  margin: 40px auto;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+}
+.modal .modal-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top center;
+     object-position: top center;
+}
+/* Add styles for the footer */
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            font-size: 20px;
+            margin: 0 10px;
+            color: #fff;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+        
+
+</style>
+
+</head>
+<body>
+  <nav>
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="newcascading.html">Sample Designs</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <img src="images/ddrose2.jpg" alt="Hero Image" class="hero-image" style="max-width: 500px; width: 100%; height: auto;">
+        <h1>My Sample Landing Pages</h1>
+        <p>Scroll down and check out some of my older ones.</p>
+    </section>
+<!-- partial:index.partial.html -->
+<div class="container">
+  
+  </section>
+
+  <div class="wrapper">
+
+    <div class="rolo">
+      <!--  using js to populate for refresh purposes  -->
+    </div>
+    <div class="spin-me">Drag Me</div>
+  </div>
+  <section class="spacer"></section>
+
+</div>
+
+<!-- modal view -->
+<div class="modal">
+  <div data-flip-id="img" class="modal-image"><img src="" /></div>
+</div>
+
+<canvas class="trail"></canvas>
+
+<!-- Footer -->
+     <footer>
+        <p>Created by David Rose, 607-244-0502, E-Mail: <a href="mailto:dvdrose999@gmail.com">dvdrose999@gmail.com</a></p>
+        <div class="social-icons">
+            <a href="https://x.com/Daves_NFTs_" target="_blank"><img src="images/twitter.png" alt="Twitter"></a>
+            <a href="https://www.linkedin.com/in/dave-rose-510a48268/" target="_blank"><img src="images/linkedin.png" alt="LinkedIn"></a>
+            <a href="https://www.pinterest.com/dvdrose61365/" target="_blank"><img src="images/pinterest.png" alt="Pinterest"></a>
+            <a href="https://github.com/dvdrose2" target="_blank"><img src="images/github.png" alt="Pinterest"></a>
+        </div>
+    </footer>
+<!-- partial -->
+  <script src='https://unpkg.co/gsap@3/dist/gsap.min.js'></script>
+<script src='https://assets.codepen.io/16327/Flip.min.js'></script>
+<script src='https://unpkg.com/gsap@3/dist/Draggable.min.js'></script>
+<script src='https://assets.codepen.io/16327/InertiaPlugin.min.js'></script>
+<script>
+  // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            navUl.classList.toggle('show');
+        });
+
+        // Mouse trail effect
+        const canvas = document.querySelector('.trail');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.1) this.size -= 0.1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].size <= 0.3) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function createParticles(e) {
+            const xPos = e.x;
+            const yPos = e.y;
+            for (let i = 0; i < 5; i++) {
+                particles.push(new Particle(xPos, yPos));
+            }
+        }
+
+        let animationId;
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            createParticles(e);
+            if (!animationId) {
+                animate();
+            }
+        });
+
+        window.addEventListener('mouseout', () => {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        });
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+  // Register GSAP plugins
+gsap.registerPlugin(Draggable, InertiaPlugin);
+gsap.config({ trialWarn: false });
+
+// Array of image file names
+const imageFiles = [
+  'image1.png',
+  'image2.png',
+  'image3.png',
+  'image4.gif',
+  'image5.png',
+  'image6.jpg',
+  'image7.png',
+  'image8.jpg',
+  'image9.png',
+  'image10.png'
+];
+
+// Populating images
+const rolo = document.querySelector(".rolo");
+imageFiles.forEach((file, i) => {
+  rolo.innerHTML += `
+    <div class="item a" data-url="images/${file}">
+      <div class="card-text card-text--back">Resource Title ${i + 1}</div>
+      <img src="images/${file}" alt="Resource ${i + 1}" />
+      <div class="card-text">Resource Title ${i + 1}</div>
+    </div>`;
+});
+
+// Setup tween for draggable
+const items = gsap.utils.toArray(".item");
+const xOffset = 30;
+
+items.forEach((item, i) => {
+  gsap.set(item, {
+    transformOrigin: "-30px 0",
+    x: xOffset,
+    rotateY: (i * 360) / items.length
+  });
+});
+
+const updateZIndex = () => {
+  items.forEach((item) => {
+    const backText = item.querySelector(".card-text--back");
+    gsap.utils.wrap(0, 360, gsap.getProperty(item, "rotateY")) < 270
+      ? gsap.set(backText, { zIndex: 2 })
+      : gsap.set(backText, { zIndex: 0 });
+  });
+};
+
+const roloTL = gsap.to(items, {
+  rotateY: "+=360",
+  duration: 5,
+  ease: "none",
+  paused: true,
+  onUpdate: updateZIndex
+});
+updateZIndex();
+
+// Draggable setup
+const proxy = document.createElement("div");
+const itemCount = items.length;
+const itemW = items[0].offsetWidth;
+const wrapW = itemCount * itemW;
+
+// FLIP constants
+let activeItem;
+const modal = document.querySelector(".modal");
+const modalImage = modal.querySelector(".modal-image");
+let normalizeTL;
+
+// Circumference of circle
+const c = (itemW + xOffset) * 2 * Math.PI;
+// Arc distance from edge to edge (for snapping)
+const seg = c / itemCount;
+
+// Wrap for tween progress scrub
+const wrapVal = gsap.utils.wrap(0, c);
+
+const drag = Draggable.create(proxy, {
+  type: "x",
+  trigger: ".item",
+  inertia: true,
+  onDrag: updateProgress,
+  onThrowUpdate: updateProgress,
+  snap: {
+    x: (x) => Math.round(x / seg) * seg
+  }
+});
+
+function updateProgress() {
+  roloTL.progress(wrapVal(this.x) / c);
+}
+
+// FLIP into modal
+items.forEach((item) => {
+  item.addEventListener("click", () => {
+    drag[0].disable();
+    drag[0].tween && drag[0].tween.kill();
+    activeItem = item;
+    item.classList.add("active-thumb");
+    item.parentElement.classList.add("active");
+    item.dataset.flipId = "img";
+
+    normalizeTL = gsap
+      .timeline({
+        onComplete: () => {
+          gsap.set(item, { opacity: 0 });
+          const state = Flip.getState([item, modalImage]);
+          modalImage.querySelector("img").setAttribute("src", item.dataset.url);
+          modal.classList.add("active");
+          modalImage.style.display = "block";
+
+          Flip.from(state, {
+            duration: 0.4,
+            simple: true,
+            ease: "sine.inOut"
+          });
+        },
+        onReverseComplete: () => {
+          item.parentElement.classList.remove("active");
+          drag[0].enable();
+        }
+      })
+      .to(item, {
+        yPercent: -120,
+        duration: 0.2
+      })
+      .to(
+        item,
+        {
+          x: 0,
+          xPercent: -50,
+          rotateY: "0_short",
+          duration: 0.2
+        },
+        0.1
+      );
+  });
+});
+
+// FLIP out of modal
+modal.addEventListener("click", () => {
+  activeItem.dataset.flipId = "img";
+  gsap.set(activeItem, { opacity: 1 });
+
+  const state = Flip.getState([modalImage, activeItem]);
+
+  modal.classList.remove("active");
+
+  Flip.from(state, {
+    duration: 0.4,
+    simple: true,
+    ease: "sine.inOut",
+    onComplete: () => {
+      modalImage.querySelector("img").setAttribute("src", "");
+      activeItem.classList.remove("active-thumb");
+      activeItem.dataset.flipId = "img";
+      normalizeTL.reverse();
+    }
+  });
+});
+
+
+</script>
+
+</body>
+</html>
