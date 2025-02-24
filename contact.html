@@ -187,6 +187,32 @@
                 transform: rotateY(360deg);
             }
         }
+        <style>
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  input, textarea {
+    margin-top: 5px;
+  }
+  
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+</style>
     </style>
 </head>
 <body>
@@ -214,15 +240,15 @@
   <label>
     Your Name:
     <input type="text" name="text">
-  </label><br>
+  </label>
     <label>
     Your Phone:
     <input type="number" name="number" style="-moz-appearance: textfield; -webkit-inner-spin-button: none; -webkit-outer-spin-button: none;">
-  </label><br>
+  </label>
     <label>
     Your email:
     <input type="email" name="email">
-  </label><br>
+  </label>
   <label>
     Your message:
     <textarea name="message"></textarea>
