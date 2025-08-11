@@ -50,29 +50,53 @@
         .hero {
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 2rem;
         }
 
+        .hero-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+            gap: 2rem;
+        }
+
         .hero-image {
             width: 100%;
-            max-width: 600px;
+            max-width: 400px;
             height: auto;
-            margin-bottom: 2rem;
+            flex-shrink: 0;
+        }
+
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 0.1rem;
+            color: #fff;
+        }
+
+        .hero h2 {
             font-size: 3rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.1rem;
+            color: #d8b4fe;
         }
 
         .hero p {
             font-size: 1.5rem;
             color: rgba(255, 255, 255, 0.8);
             text-shadow: 0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3);
+            margin-top: 0.2rem;
         }
 
         .hamburger {
@@ -88,7 +112,91 @@
             margin: 5px 0;
         }
 
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            margin-top: 2rem; /* Added to ensure separation from hero */
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            font-size: 20px;
+            margin: 0 10px;
+            color: #fff;
+        }
+
+        .social-icons img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+
+        .trail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
         @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-image {
+                max-width: 300px; /* Smaller size for phone screens */
+                width: 80%; /* Responsive scaling */
+                margin-bottom: 1rem;
+            }
+
+            .hero-text {
+                align-items: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem; /* Slightly smaller for mobile */
+            }
+
+            .hero h2 {
+                font-size: 2rem; /* Slightly smaller for mobile */
+            }
+
+            .hero p {
+                font-size: 1.2rem; /* Slightly smaller for mobile */
+            }
+
+            footer {
+                margin-top: 3rem; /* Increased margin to prevent overlap */
+                padding: 1.5rem;
+            }
+
             nav ul {
                 display: none;
                 flex-direction: column;
@@ -112,46 +220,26 @@
             }
         }
 
-        .trail {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        /* Add styles for the footer */
-        footer {
-            background-color: #000;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        footer a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .social-icons {
-            margin-top: 10px;
-        }
-
-        .social-icons a {
-            font-size: 20px;
-            margin: 0 10px;
-            color: #fff;
-        }
-        @keyframes rotate {
-            from {
-                transform: rotateY(0deg);
+        @media (max-width: 480px) {
+            .hero-image {
+                max-width: 250px; /* Further shrink for very small screens */
+                width: 70%;
             }
-            to {
-                transform: rotateY(360deg);
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            footer {
+                margin-top: 4rem; /* Extra margin for very small screens */
             }
         }
     </style>
@@ -165,27 +253,33 @@
         </div>
         <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="resume.html">Resume</a></li>
             <li><a href="newcascading.html">Sample Designs</a></li>
+            <li><a href="bootstrapsite.html">Web Sites</a></li>
+            <li><a href="sqlcertifications.html">SQL Developer</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
 
     <section class="hero">
-        <img src="images/ddrose2.jpg" alt="Hero Image" class="hero-image" style="max-width: 500px; width: 100%; height: auto;">
-        <h1>Web Designer / Developer</h1>
-        <p>David Rose</p>
+        <div class="hero-content">
+            <img src="images/ddrose2.jpg" alt="Hero Image" class="hero-image">
+            <div class="hero-text">
+                <h1>Web Designer / Developer</h1>
+                <h2>SQL Developer</h2>
+                <p>David Rose</p>
+            </div>
+        </div>
     </section>
 
     <canvas class="trail"></canvas>
-    <!-- Footer -->
-     <footer>
+    <footer>
         <p>Created by David Rose, 607-244-0502, E-Mail: <a href="mailto:dvdrose999@gmail.com">dvdrose999@gmail.com</a></p>
         <div class="social-icons">
             <a href="https://x.com/Daves_NFTs_" target="_blank"><img src="images/twitter.png" alt="Twitter"></a>
             <a href="https://www.linkedin.com/in/dave-rose-510a48268/" target="_blank"><img src="images/linkedin.png" alt="LinkedIn"></a>
             <a href="https://www.pinterest.com/dvdrose61365/" target="_blank"><img src="images/pinterest.png" alt="Pinterest"></a>
-            <a href="https://github.com/dvdrose2" target="_blank"><img src="images/github.png" alt="Pinterest"></a>
+            <a href="https://github.com/dvdrose2" target="_blank"><img src="images/github.png" alt="GitHub"></a>
         </div>
     </footer>
 

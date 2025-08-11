@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Double Column Page</title>
+    <title>SQL Certifications Portfolio</title>
     <style>
         body {
             margin: 0;
@@ -18,6 +18,7 @@
             background-color: rgba(0, 0, 0, 0.8);
             padding: 1rem;
             position: fixed;
+            top: 0;
             width: 100%;
             z-index: 1000;
         }
@@ -48,13 +49,14 @@
         }
 
         .hero {
-            height: 50vh;
+            min-height: 60vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem;
+            padding: 6rem 2rem 2rem; /* Increased top padding to clear fixed nav */
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="10" y="10" width="30" height="30" fill="none" stroke="#39ff14" stroke-width="2"/><rect x="50" y="10" width="30" height="30" fill="none" stroke="#39ff14" stroke-width="2"/><rect x="10" y="50" width="30" height="30" fill="none" stroke="#39ff14" stroke-width="2"/><rect x="50" y="50" width="30" height="30" fill="none" stroke="#39ff14" stroke-width="2"/><line x1="40" y1="25" x2="50" y2="25" stroke="#39ff14" stroke-width="2"/><line x1="40" y1="65" x2="50" y2="65" stroke="#39ff14" stroke-width="2"/></svg>') repeat;
         }
 
         .hero h1 {
@@ -64,9 +66,24 @@
             text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
         }
 
-        .hero p {
-            font-size: 1.5rem;
+        .hero .certifications {
+            font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto 2rem; /* Added bottom margin for spacing */
+        }
+
+        .hero .skills {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px; /* Limit width for readability */
+            margin: 2rem auto; /* Centered with spacing */
+        }
+
+        .hero .skills h2 {
+            font-size: 1.5rem;
+            color: #39ff14;
+            margin-bottom: 0.5rem;
         }
 
         .content {
@@ -74,6 +91,7 @@
             flex-wrap: wrap;
             justify-content: space-around;
             padding: 2rem;
+            margin-top: 2rem; /* Added to ensure spacing after hero */
         }
 
         .column {
@@ -98,6 +116,115 @@
             margin: 5px 0;
         }
 
+        .rotating-gallery-container {
+            min-height: 50vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 800px;
+            margin: 4rem 0; /* Increased margin for spacing */
+            z-index: 1; /* Ensure gallery stays below nav */
+        }
+
+        .gallery {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .gallery img {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            left: 50%;
+            top: 50%;
+            margin-left: -100px;
+            margin-top: -100px;
+            cursor: pointer;
+        }
+
+        .gallery img:nth-child(1) { transform: rotateY(0deg) translateZ(350px); }
+        .gallery img:nth-child(2) { transform: rotateY(36deg) translateZ(350px); }
+        .gallery img:nth-child(3) { transform: rotateY(72deg) translateZ(350px); }
+        .gallery img:nth-child(4) { transform: rotateY(108deg) translateZ(350px); }
+        .gallery img:nth-child(5) { transform: rotateY(144deg) translateZ(350px); }
+        .gallery img:nth-child(6) { transform: rotateY(180deg) translateZ(350px); }
+        .gallery img:nth-child(7) { transform: rotateY(216deg) translateZ(350px); }
+        .gallery img:nth-child(8) { transform: rotateY(252deg) translateZ(350px); }
+        .gallery img:nth-child(9) { transform: rotateY(288deg) translateZ(350px); }
+        .gallery img:nth-child(10) { transform: rotateY(324deg) translateZ(350px); }
+
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .lightbox img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .lightbox .close-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem; /* Added for spacing */
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            font-size: 20px;
+            margin: 0 10px;
+            color: #fff;
+        }
+
+        .trail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
         @media (max-width: 768px) {
             nav ul {
                 display: none;
@@ -120,116 +247,37 @@
             .hamburger {
                 display: block;
             }
-        }
 
-        .trail {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9999;
-        }
+            .hero {
+                min-height: auto;
+                padding: 5rem 1rem 2rem; /* Adjusted for mobile */
+            }
 
-        /* Rotating image gallery styles */
-        .rotating-gallery-container {
-            height: 50vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 800px;
-        }
+            .hero h1 {
+                font-size: 2rem;
+            }
 
-        .gallery {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            transform-style: preserve-3d;
-            transition: transform 0.8s ease-in-out;
-        }
+            .hero .certifications, .hero .skills {
+                font-size: 1rem;
+            }
 
-        .gallery img {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            left: 50%;
-            top: 50%;
-            margin-left: -100px;
-            margin-top: -100px;
-            cursor: pointer; /* Add cursor style */
-        }
+            .rotating-gallery-container {
+                min-height: 40vh;
+                margin: 2rem 0; /* Reduced margin for mobile */
+            }
 
-        /* Position the images around the cylinder */
-        .gallery img:nth-child(1) { transform: rotateY(0deg) translateZ(350px); }
-        .gallery img:nth-child(2) { transform: rotateY(36deg) translateZ(350px); }
-        .gallery img:nth-child(3) { transform: rotateY(72deg) translateZ(350px); }
-        .gallery img:nth-child(4) { transform: rotateY(108deg) translateZ(350px); }
-        .gallery img:nth-child(5) { transform: rotateY(144deg) translateZ(350px); }
-        .gallery img:nth-child(6) { transform: rotateY(180deg) translateZ(350px); }
-        .gallery img:nth-child(7) { transform: rotateY(216deg) translateZ(350px); }
-        .gallery img:nth-child(8) { transform: rotateY(252deg) translateZ(350px); }
-        .gallery img:nth-child(9) { transform: rotateY(288deg) translateZ(350px); }
-        .gallery img:nth-child(10) { transform: rotateY(324deg) translateZ(350px); }
+            .gallery {
+                width: 200px;
+                height: 200px;
+            }
 
-        /* Lightbox styles */
-        .lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: none; /* Hidden by default */
-            justify-content: center;
-            align-items: center;
-            z-index: 10000; /* Ensure it's on top */
+            .gallery img {
+                width: 150px;
+                height: 150px;
+                margin-left: -75px;
+                margin-top: -75px;
+            }
         }
-
-        .lightbox img {
-            max-width: 80%;
-            max-height: 80%;
-            object-fit: contain;
-            border-radius: 10px;
-        }
-
-        .lightbox .close-button {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 30px;
-            color: #fff;
-            cursor: pointer;
-            z-index: 10001;
-        }
-        footer {
-            background-color: #000;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        footer a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .social-icons {
-            margin-top: 10px;
-        }
-
-        .social-icons a {
-            font-size: 20px;
-            margin: 0 10px;
-            color: #fff;
-        }
-        
     </style>
 </head>
 <body>
@@ -250,36 +298,39 @@
     </nav>
 
     <section class="hero">
-        <h1>My Web Design Samples</h1>
-        <p>Click on image to rotate, double click to open image.</p>
+        <h1>My SQL Certifications</h1>
+        <div class="certifications">
+            <p><strong><a href="certificates/certificatew3schoolSQL.jpg" target="_blank" style="color: #cc00ff;">CERTIFIED SQL DEVELOPER</a></strong> - 2025</p>
+            <p><strong><a href="certificates/MYSQLbeginnerCert.jpg" target="_blank" style="color: #cc00ff;">MYSQL AND MYSQL WORKBENCH FOR BEGINNERS</a></strong> - 2025</p>
+            <p><strong><a href="certificates/sqlbootcamp.jpg" target="_blank" style="color: #cc00ff;">SQL BOOTCAMP</a></strong> - 2025</p>
+        </div>
+        <div class="skills">
+            <h2>About Me: Web Developer</h2>
+            <p>I’m a passionate web developer with a strong foundation in modern frontend technologies, specializing in crafting dynamic, user-focused applications using React.js and Vue 3. Proficient in HTML, CSS, and Bootstrap 5, I excel at transforming Figma UI/UX designs into responsive, functional applications, streamlining the journey from concept to deployment.</p>
+            <p>Currently, I’m expanding my skill set by mastering SQL and learning PHP to deliver robust full-stack solutions. My proficiency in JavaScript enables me to write clean, efficient code, enhanced by modern development tools and AI-assisted workflows. As a lifelong learner, I’m committed to staying ahead of industry trends, with plans to deepen my expertise in advanced JavaScript, explore Python’s Django framework, and venture into Solidity for blockchain development.</p>
+            <p><b>What Sets Me Apart:</b></p>
+            <p>Full-Stack Versatility: Crafting seamless user experiences with a dedication to mastering backend technologies.</p>
+            <p>Design-to-Code Expertise: Bridging creative vision with technical precision to create polished, user-friendly applications.</p>
+            <p>Proactive Learning: Continuously adopting cutting-edge technologies to enhance project outcomes.</p>
+            <p>Workflow Efficiency: Streamlining development processes through integrated design and coding skills.</p>
+            <p>I’m eager to join a team where my creative problem-solving, technical versatility, and passion for building exceptional web experiences can drive impactful results. Let’s connect to explore how I can contribute to your next project!</p>
+        </div>
     </section>
 
     <section class="rotating-gallery-container">
         <div class="gallery">
-            <!-- Image list -->
-            <img src="images/image1.png" alt="Image 1" data-index="1">
-            <img src="images/image2.gif" alt="Image 2" data-index="2">
-            <img src="images/image3.png" alt="Image 3" data-index="3">
-            <img src="images/image4.gif" alt="Image 4" data-index="4">
-            <img src="images/image5.png" alt="Image 5" data-index="5">
-            <img src="images/image6.jpg" alt="Image 6" data-index="6">
-            <img src="images/image7.jpg" alt="Image 7" data-index="7">
-            <img src="images/image8.jpg" alt="Image 8" data-index="8">
-            <img src="images/image9.jpg" alt="Image 9" data-index="9">
-            <img src="images/image10.png" alt="Image 10" data-index="10">
+            <img src="images2/php.png" alt="PHP Next Language" data-index="1">
+            <img src="images2/javascript.png" alt="Javascript After That" data-index="2">
+            <img src="images2/django.png" alt="SQL Project 3" data-index="3">
+            <img src="images2/solidity.png" alt="SQL Project 4" data-index="4">
+            <img src="images2/php.png" alt="SQL Project 1" data-index="5">
+            <img src="images2/javascript.png" alt="SQL Project 2" data-index="6">
+            <img src="images2/django.png" alt="SQL Project 3" data-index="7">
+            <img src="images2/solidity.png" alt="SQL Project 4" data-index="8">
+            <img src="images2/django.png" alt="SQL Project 3" data-index="9">
+            <img src="images2/solidity.png" alt="SQL Project 4" data-index="10">
         </div>
     </section>
-    <div class="content">
-        <div class="column"><center>
-            <h2>Portfolio Site Two (More information in it.)</h2>
-            <p>Created this site with html, css and javascript.</p>
-            <a href="https://dvdrose2.github.io/newresume/index.html">Click here to see other site.</a></center>
-        </div>
-        <div class="column">
-            <center><h2>This Site Was Created With Bootstrap Studio</h2>
-            <p>Created this from raw HTML, CSS and the Bootstrap Studio App.</p></center>
-        </div>
-    </div>
 
     <div class="lightbox">
         <span class="close-button">&times;</span>
@@ -288,7 +339,7 @@
 
     <canvas class="trail"></canvas>
 
-     <footer>
+    <footer>
         <p>Created by David Rose, 607-244-0502, E-Mail: <a href="mailto:dvdrose999@gmail.com">dvdrose999@gmail.com</a></p>
         <div class="social-icons">
             <a href="https://x.com/Daves_NFTs_" target="_blank"><img src="images/twitter.png" alt="Twitter"></a>
@@ -299,7 +350,6 @@
     </footer>
 
     <script>
-        // Hamburger menu functionality
         const hamburger = document.querySelector('.hamburger');
         const navUl = document.querySelector('nav ul');
 
@@ -307,7 +357,6 @@
             navUl.classList.toggle('show');
         });
 
-        // Mouse trail effect
         const canvas = document.querySelector('.trail');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -375,17 +424,15 @@
             gallery.style.transform = `rotateY(${rotationAngle}deg)`;
         });
 
-        // Lightbox functionality
         const lightbox = document.querySelector('.lightbox');
         const lightboxImg = lightbox.querySelector('img');
         const closeButton = lightbox.querySelector('.close-button');
         const galleryImages = document.querySelectorAll('.gallery img');
-        let isLightboxOpen = false; // Track lightbox state
+        let isLightboxOpen = false;
 
         galleryImages.forEach(img => {
             img.addEventListener('dblclick', (e) => {
-                 e.preventDefault(); // Prevent default double-click behavior
-
+                e.preventDefault();
                 if (!isLightboxOpen) {
                     lightbox.style.display = 'flex';
                     lightboxImg.src = img.src;
@@ -398,7 +445,7 @@
         });
 
         closeButton.addEventListener('click', () => {
-            lightbox.style.display = 'none'; // Hide lightbox
+            lightbox.style.display = 'none';
             isLightboxOpen = false;
         });
 

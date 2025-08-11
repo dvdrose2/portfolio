@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>David Rose Resume</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #cube-container {
+            position: fixed;
+            top: 10%;
+            right: 5%;
+            width: 300px;
+            height: 300px;
+            z-index: 1;
+        }
+
+        .trail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #000;
+            background-color: #39ff14;
+            box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
+        }
+
+        .hero {
+            padding: 100px 2rem 2rem; /* Added padding-top to account for fixed nav */
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            text-align: left;
+            max-width: 60%;
+            margin-left: 5%;
+            position: relative;
+            z-index: 2; /* Ensure content is above cube */
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5), 0 0 20px rgba(57, 255, 20, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 5px 0;
+        }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            font-size: 20px;
+            margin: 0 10px;
+            color: #fff;
+        }
+
+        .social-icons img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #cube-container {
+                top: 80px;
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 200px;
+                height: 200px;
+            }
+
+            .hero {
+                justify-content: center;
+                text-align: center;
+                max-width: 100%;
+                margin-left: 0;
+                padding-top: 300px; /* Space for cube and nav at top */
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 1rem 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            footer {
+                margin-top: 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #cube-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                padding-top: 250px;
+            }
+
+            footer {
+                margin-top: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="newcascading.html">Sample Designs</a></li>
+            <li><a href="bootstrapsite.html">Web Sites</a></li>
+            <li><a href="sqlcertifications.html">SQL Developer</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="resume-content">
+            <h1>David Rose</h1>
+            <p><strong>Graphic & Web Designer | UI/UX Specialist | SQL Developer</strong><br>
+            Norwich, NY • <a href="mailto:your@email.com">dvdrose999@gmail.com</a> • <a href="https://dvdrose2.github.io/newresume/index.html">Portfolio</a></p>
+
+            <div class="section">
+                <h2>Professional Summary</h2>
+                <p>Innovative and deadline-driven Graphic & UI/Web Designer with over 15 years of experience creating user-centered digital and print designs, websites, and branding materials. Passionate about open-source tools and modern development workflows. Adept in using AI technologies, cloud platforms, and containerization tools to enhance design and development. Skilled in both front-end development and graphic design, with a strong foundation in UI/UX principles, and now expanding into backend technologies like MySQL and PHP.</p>
+            </div>
+
+            <div class="section">
+                <h2>Technical Skills</h2>
+                <p><strong>Design & UI/UX Tools:</strong> Figma, Adobe Creative Suite, Inkscape, GIMP, Blender, Natron, Bootstrap Studio, Penpot, QuarkXPress, Locofy, Anima</p>
+                <p><strong>Web Development & Front-End:</strong> HTML, CSS, JavaScript, React, Vue, Visual Studio Code, Sublime Text, Bluefish, Firebase, GitHub, Wordpress, Weebly, GoDaddy, Wix</p>
+                <p><strong>Backend & Database:</strong> MySQL, MySQL Workbench, pgAdmin 4, DBeaver, Docker, Podman (preferred), Linux CLI, SQL (97% W3Schools Certification)</p>
+                <p><strong>Platforms & OS:</strong> Linux (Ubuntu, Manjaro, Fedora, BackBox, Xubuntu), Windows (7–10), macOS</p>
+                <p><strong>Other Tools:</strong> Microsoft Office, OpenOffice, Strata Studio Pro</p>
+            </div>
+
+            <div class="section">
+                <h2>Certifications & Courses</h2>
+                <ul>
+                    <li><strong>SQL Certification (97%)</strong> – W3Schools</li>
+                    <li><strong>Ongoing PHP Development Course</strong> – 2025</li>
+                    <li><strong>Udemy Web Design & Development</strong> (2021–2024): Figma, UI/UX, HTML, CSS, JS, React/Vue Conversion</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Experience</h2>
+                <div>
+                    <span class="title">Graphic Designer & Web Developer</span>
+                    <span class="date">2016 – 2022</span><br>
+                    <span class="subtitle">DR Dave's RV and Trailer Repair, Norwich, NY</span>
+                    <ul>
+                        <li>Designed and developed business website using Wix, Weebly, GoDaddy, Firebase, GitHub, and Wordpress</li>
+                        <li>Created logos, car magnets, flyers, posters, and print collateral</li>
+                        <li>Built and managed virtual MySQL servers via Docker and Podman</li>
+                        <li>Configured printers, scanners, and software across Linux, Windows, and macOS</li>
+                        <li>Maintained virtual machines for testing and development</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <span class="title">Graphic Designer & Pre-Press Technician</span>
+                    <span class="date">2005 – 2007</span><br>
+                    <span class="subtitle">ADS Creative Consulting, Norwich, NY</span>
+                    <ul>
+                        <li>Designed marketing materials: brochures, catalogs, trade show posters</li>
+                        <li>Used Adobe Creative Suite and Strata Studio Pro for multimedia and pre-press</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <span class="title">Graphic Design Specialist</span>
+                    <span class="date">2000 – 2005</span><br>
+                    <span class="subtitle">Norwich Pennysaver, Norwich, NY</span>
+                    <ul>
+                        <li>Created flyer layouts, logos, and original artwork using Adobe Suite</li>
+                        <li>Handled database-driven design tasks</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <span class="title">Graphic & Web Designer</span>
+                    <span class="date">1998 – 1999</span><br>
+                    <span class="subtitle">Paragon Solutions, Norwich, NY</span>
+                    <ul>
+                        <li>Troubleshot and configured Mac systems and peripherals</li>
+                        <li>Built client websites using Adobe PageMill and Photoshop</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Education</h2>
+                <ul>
+                    <li><strong>Udemy Web Design & Development</strong> – 2021–2024</li>
+                    <li><strong>Chenango Tech Center</strong> – 1995–1996: Graphic Arts/Printing Program</li>
+                    <li><strong>Art Instruction Schools</strong> – 1981–1982: Illustration and Cartooning</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div id="cube-container"></div>
+    <canvas class="trail"></canvas>
+
+    <footer>
+        <p>Created by David Rose, 607-244-0502, E-Mail: <a href="mailto:dvdrose999@gmail.com">dvdrose999@gmail.com</a></p>
+        <div class="social-icons">
+            <a href="https://x.com/Daves_NFTs_" target="_blank"><img src="images/twitter.png" alt="Twitter"></a>
+            <a href="https://www.linkedin.com/in/dave-rose-510a48268/" target="_blank"><img src="images/linkedin.png" alt="LinkedIn"></a>
+            <a href="https://www.pinterest.com/dvdrose61365/" target="_blank"><img src="images/pinterest.png" alt="Pinterest"></a>
+            <a href="https://github.com/dvdrose2" target="_blank"><img src="images/github.png" alt="GitHub"></a>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            navUl.classList.toggle('show');
+        });
+
+        // Mouse trail effect
+        const canvas = document.querySelector('.trail');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.1) this.size -= 0.1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].size <= 0.3) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function createParticles(e) {
+            const xPos = e.clientX;
+            const yPos = e.clientY;
+            for (let i = 0; i < 5; i++) {
+                particles.push(new Particle(xPos, yPos));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('mousemove', createParticles);
+        animateParticles();
+
+        // Three.js setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 300 / 300, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(300, 300);
+        document.getElementById('cube-container').appendChild(renderer.domElement);
+
+        const geometry = new THREE.BoxGeometry(2, 2, 2);
+        const materials = Array(6).fill().map(() => 
+            new THREE.MeshPhongMaterial({ color: 0xFFC0CB })
+        );
+        const cube = new THREE.Mesh(geometry, materials);
+        scene.add(cube);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        const glowGeometry = new THREE.SphereGeometry(3, 32, 32);
+        const glowMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                coefficient: { value: 0.5 },
+                power: { value: 2 },
+                glowColor: { value: new THREE.Color(0x39ff14) }
+            },
+            vertexShader: `
+                varying vec3 vNormal;
+                void main() {
+                    vNormal = normalize(normalMatrix * normal);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float coefficient;
+                uniform float power;
+                uniform vec3 glowColor;
+                varying vec3 vNormal;
+                void main() {
+                    float intensity = pow(coefficient - dot(vNormal, vec3(0.0, 0.0, 1.0)), power);
+                    gl_FragColor = vec4(glowColor, intensity);
+                }
+            `,
+            side: THREE.BackSide,
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+
+        const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+        scene.add(glowMesh);
+
+        camera.position.z = 5;
+
+        const cubeFaces = [
+            { heading: "Welcome", tagline: "My Name is David Rose", alert: "Thank you for checking out my Site!" },
+            { heading: "About Me", tagline: "Learn My Story", alert: "Love coding and design. Still learning on my way to Mastering" },
+            { heading: "Skills", tagline: "Here is my list.", alert: "HTML, CSS Bootstrap Studio, Javascript, React, Vue, Figma, Penpot" },
+            { heading: "Contact", tagline: "Get in touch", alert: "Call me at: 607-244-0502" },
+            { heading: "Programs", tagline: "Applications that I know", alert: "Photoshop, Illustrator, InDesing, After Effects, Adobe Acrobat Pro, Blender" },
+            { heading: "E-Mail", tagline: "Here is my email", alert: "dvdrose999@gmail.com" }
+        ];
+
+        cubeFaces.forEach((face, index) => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+            
+            context.fillStyle = 'rgba(255, 192, 203, 1)';
+            context.fillRect(0, 0, 512, 512);
+            
+            context.font = 'bold 36px Arial';
+            context.fillStyle = 'black';
+            context.textAlign = 'center';
+            context.fillText(face.heading, 256, 200);
+            
+            context.font = '18px Arial';
+            context.fillText(face.tagline, 256, 250);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            materials[index].map = texture;
+            materials[index].needsUpdate = true;
+        });
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        renderer.domElement.addEventListener('click', (event) => {
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObject(cube);
+
+            if (intersects.length > 0) {
+                const faceIndex = Math.floor(intersects[0].faceIndex / 2);
+                alert(cubeFaces[faceIndex].alert);
+            }
+        });
+
+        let targetRotation = { x: 0, y: 0 };
+        let targetPosition = { x: 0, y: 0 };
+
+        window.addEventListener('mousemove', (event) => {
+            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            targetRotation.x = mouseY * Math.PI * 0.5;
+            targetRotation.y = mouseX * Math.PI * 0.5;
+
+            targetPosition.x = mouseX * 0.5;
+            targetPosition.y = mouseY * 0.5;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            cube.rotation.x += (targetRotation.x - cube.rotation.x) * 0.1;
+            cube.rotation.y += (targetRotation.y - cube.rotation.y) * 0.1;
+
+            cube.position.x += (targetPosition.x - cube.position.x) * 0.1;
+            cube.position.y += (targetPosition.y - cube.position.y) * 0.1;
+
+            glowMesh.rotation.x = cube.rotation.x;
+            glowMesh.rotation.y = cube.rotation.y;
+            glowMesh.position.x = cube.position.x;
+            glowMesh.position.y = cube.position.y;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('cube-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        });
+    </script>
+</body>
+</html>
