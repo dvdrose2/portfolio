@@ -12,116 +12,176 @@
             background-color: #000;
             color: #fff;
             overflow-x: hidden;
+            overflow-y: auto; /* ← FIXED: allows scrolling so footer is reachable */
         }
-
         nav {
             background-color: rgba(0, 0, 0, 0.8);
-            padding: 1rem;
+            padding: 0.75rem 1rem;
             position: fixed;
             width: 100%;
             z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
-
         nav ul {
             list-style-type: none;
             padding: 0;
             margin: 0;
             display: flex;
             justify-content: center;
+            gap: 1.5rem;
         }
-
         nav ul li {
-            margin: 0 1rem;
+            margin: 0;
         }
-
         nav ul li a {
             color: #fff;
             text-decoration: none;
             padding: 0.5rem 1rem;
             transition: all 0.3s ease;
+            font-size: 1rem;
         }
-
         nav ul li a:hover {
             color: #000;
             background-color: #39ff14;
             box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
         }
-
         .hero {
-            height: 50vh;
+            height: 22vh; /* ← tightened a bit more */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem;
+            padding: 1rem 2rem;
+            margin-top: 50px; /* accounts for fixed nav */
         }
-
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 2.4rem;
+            margin-bottom: 0.6rem;
             color: #39ff14;
             text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
         }
-
         .hero p {
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
         }
+        .rotating-gallery-container {
+            height: 36vh; /* ← tightened a bit more */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 800px;
+            padding: 0.5rem 0;
+        }
+        .gallery {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease-in-out;
+        }
+        .gallery img {
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            left: 50%;
+            top: 50%;
+            margin-left: -85px;
+            margin-top: -85px;
+            cursor: pointer;
+        }
+        /* Scaled-down cylinder positions */
+        .gallery img:nth-child(1) { transform: rotateY(0deg) translateZ(290px); }
+        .gallery img:nth-child(2) { transform: rotateY(36deg) translateZ(290px); }
+        .gallery img:nth-child(3) { transform: rotateY(72deg) translateZ(290px); }
+        .gallery img:nth-child(4) { transform: rotateY(108deg) translateZ(290px); }
+        .gallery img:nth-child(5) { transform: rotateY(144deg) translateZ(290px); }
+        .gallery img:nth-child(6) { transform: rotateY(180deg) translateZ(290px); }
+        .gallery img:nth-child(7) { transform: rotateY(216deg) translateZ(290px); }
+        .gallery img:nth-child(8) { transform: rotateY(252deg) translateZ(290px); }
+        .gallery img:nth-child(9) { transform: rotateY(288deg) translateZ(290px); }
+        .gallery img:nth-child(10) { transform: rotateY(324deg) translateZ(290px); }
 
         .content {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
-            padding: 2rem;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem 2rem 3rem; /* ← extra bottom padding so footer has breathing room */
+            max-width: 1200px;
+            margin: 0 auto;
         }
-
         .column {
             flex: 1;
-            min-width: 300px;
-            margin: 1rem;
-            padding: 1rem;
+            min-width: 280px;
+            max-width: 420px;
+            padding: 1.2rem;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
+            text-align: center;
         }
-
+        .column h2 {
+            margin: 0.6rem 0 0.4rem;
+            font-size: 1.35rem;
+        }
+        .column p {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        .column a {
+            color: #39ff14;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .column a:hover {
+            text-decoration: underline;
+        }
         .hamburger {
             display: none;
             cursor: pointer;
             padding: 0.5rem;
         }
-
         .hamburger div {
             width: 25px;
             height: 3px;
             background-color: #fff;
             margin: 5px 0;
         }
-
         @media (max-width: 768px) {
             nav ul {
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 60px;
+                top: 52px;
                 left: 0;
                 width: 100%;
                 background-color: rgba(0, 0, 0, 0.9);
+                gap: 0;
             }
-
             nav ul.show {
                 display: flex;
             }
-
             nav ul li {
                 margin: 1rem 0;
+                text-align: center;
             }
-
             .hamburger {
                 display: block;
             }
+            .hero {
+                height: 26vh;
+            }
+            .rotating-gallery-container {
+                height: 34vh;
+            }
+            .content {
+                padding: 0.8rem 1rem 2.5rem;
+            }
         }
-
         .trail {
             position: fixed;
             top: 0;
@@ -129,50 +189,6 @@
             pointer-events: none;
             z-index: 9999;
         }
-
-        /* Rotating image gallery styles */
-        .rotating-gallery-container {
-            height: 50vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 800px;
-        }
-
-        .gallery {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            transform-style: preserve-3d;
-            transition: transform 0.8s ease-in-out;
-        }
-
-        .gallery img {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            left: 50%;
-            top: 50%;
-            margin-left: -100px;
-            margin-top: -100px;
-            cursor: pointer; /* Add cursor style */
-        }
-
-        /* Position the images around the cylinder */
-        .gallery img:nth-child(1) { transform: rotateY(0deg) translateZ(350px); }
-        .gallery img:nth-child(2) { transform: rotateY(36deg) translateZ(350px); }
-        .gallery img:nth-child(3) { transform: rotateY(72deg) translateZ(350px); }
-        .gallery img:nth-child(4) { transform: rotateY(108deg) translateZ(350px); }
-        .gallery img:nth-child(5) { transform: rotateY(144deg) translateZ(350px); }
-        .gallery img:nth-child(6) { transform: rotateY(180deg) translateZ(350px); }
-        .gallery img:nth-child(7) { transform: rotateY(216deg) translateZ(350px); }
-        .gallery img:nth-child(8) { transform: rotateY(252deg) translateZ(350px); }
-        .gallery img:nth-child(9) { transform: rotateY(288deg) translateZ(350px); }
-        .gallery img:nth-child(10) { transform: rotateY(324deg) translateZ(350px); }
-
         /* Lightbox styles */
         .lightbox {
             position: fixed;
@@ -180,25 +196,23 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: none; /* Hidden by default */
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
             justify-content: center;
             align-items: center;
-            z-index: 10000; /* Ensure it's on top */
+            z-index: 10000;
         }
-
         .lightbox img {
-            max-width: 80%;
-            max-height: 80%;
+            max-width: 85%;
+            max-height: 85%;
             object-fit: contain;
             border-radius: 10px;
         }
-
         .lightbox .close-button {
             position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 30px;
+            top: 25px;
+            right: 35px;
+            font-size: 36px;
             color: #fff;
             cursor: pointer;
             z-index: 10001;
@@ -208,28 +222,29 @@
             color: #fff;
             padding: 20px;
             text-align: center;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
         }
-
         footer a {
             color: #fff;
             text-decoration: none;
             margin: 0 10px;
         }
-
         footer a:hover {
             text-decoration: underline;
         }
-
         .social-icons {
             margin-top: 10px;
         }
-
         .social-icons a {
             font-size: 20px;
-            margin: 0 10px;
+            margin: 0 12px;
             color: #fff;
         }
-        
+        .social-icons img {
+            height: 28px;
+            filter: brightness(1.2);
+        }
     </style>
 </head>
 <body>
@@ -251,12 +266,11 @@
 
     <section class="hero">
         <h1>My Web Design Samples</h1>
-        <p>Click on image to rotate, double click to open image.</p>
+        <p>Click on image to rotate • Double-click any image to enlarge</p>
     </section>
 
     <section class="rotating-gallery-container">
         <div class="gallery">
-            <!-- Image list -->
             <img src="images/image1.png" alt="Image 1" data-index="1">
             <img src="images/image2.gif" alt="Image 2" data-index="2">
             <img src="images/image3.png" alt="Image 3" data-index="3">
@@ -269,20 +283,22 @@
             <img src="images/image10.png" alt="Image 10" data-index="10">
         </div>
     </section>
+
     <div class="content">
-        <div class="column"><center>
-            <h2>Portfolio Site Two (More information in it.)</h2>
-            <p>Created this site with html, css and javascript.</p>
-            <a href="https://dvdrose2.github.io/newresume/index.html">Click here to see other site.</a></center>
-<h2>Daisy Ui Site (More Responsive Design Samples.)</h2>
-            <p>Created this site with html, Daisy ui.</p>
-            <a href="https://dvdrose2.github.io/daisyuisamples/index.html">Click here to see other site.</a></center>
-            
-        </div>
         <div class="column">
-            <center><h2>This Site Was Created With Figma</h2>
-            <p>Created this from Figma and exported to html.</p>
-            <a href="https://rose-lines-54483590.figma.site/">Click here to see other site.</a></center>
+            <h2>Portfolio Site Two</h2>
+            <p>Created this site with HTML, CSS and JavaScript.</p>
+            <a href="https://dvdrose2.github.io/newresume/index.html" target="_blank">Click here to see other site</a>
+
+            <h2>Daisy UI Site</h2>
+            <p>Created this site with HTML + Daisy UI (more responsive samples).</p>
+            <a href="https://dvdrose2.github.io/daisyuisamples/index.html" target="_blank">Click here to see other site</a>
+        </div>
+
+        <div class="column">
+            <h2>This Site Was Created With Figma</h2>
+            <p>Created this from Figma and exported to HTML/CSS.</p>
+            <a href="https://rose-lines-54483590.figma.site/" target="_blank">Click here to see other site</a>
         </div>
     </div>
 
@@ -293,8 +309,8 @@
 
     <canvas class="trail"></canvas>
 
-     <footer>
-        <p>Created by David Rose, 607-244-0502, E-Mail: <a href="mailto:dvdrose999@gmail.com">dvdrose999@gmail.com</a></p>
+    <footer>
+        <p>Created by David Rose • 607-244-0502 • E-Mail: <a href="mailto:dvdrose999@gmail.com">dvdrose999@gmail.com</a></p>
         <div class="social-icons">
             <a href="https://x.com/Daves_NFTs_" target="_blank"><img src="images/twitter.png" alt="Twitter"></a>
             <a href="https://www.linkedin.com/in/dave-rose-510a48268/" target="_blank"><img src="images/linkedin.png" alt="LinkedIn"></a>
@@ -304,10 +320,9 @@
     </footer>
 
     <script>
-        // Hamburger menu functionality
+        // Hamburger menu
         const hamburger = document.querySelector('.hamburger');
         const navUl = document.querySelector('nav ul');
-
         hamburger.addEventListener('click', () => {
             navUl.classList.toggle('show');
         });
@@ -316,7 +331,6 @@
         const canvas = document.querySelector('.trail');
         const ctx = canvas.getContext('2d');
         let particles = [];
-
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -329,13 +343,11 @@
                 this.speedY = Math.random() * 3 - 1.5;
                 this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
             }
-
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
                 if (this.size > 0.1) this.size -= 0.1;
             }
-
             draw() {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
@@ -372,41 +384,38 @@
         window.addEventListener('mousemove', createParticles);
         animateParticles();
 
+        // Gallery rotation
         const gallery = document.querySelector('.gallery');
         let rotationAngle = 0;
-
         gallery.addEventListener('click', () => {
             rotationAngle += 36;
             gallery.style.transform = `rotateY(${rotationAngle}deg)`;
         });
 
-        // Lightbox functionality
+        // Lightbox
         const lightbox = document.querySelector('.lightbox');
         const lightboxImg = lightbox.querySelector('img');
         const closeButton = lightbox.querySelector('.close-button');
         const galleryImages = document.querySelectorAll('.gallery img');
-        let isLightboxOpen = false; // Track lightbox state
+        let isLightboxOpen = false;
 
         galleryImages.forEach(img => {
             img.addEventListener('dblclick', (e) => {
-                 e.preventDefault(); // Prevent default double-click behavior
-
+                e.preventDefault();
                 if (!isLightboxOpen) {
                     lightbox.style.display = 'flex';
                     lightboxImg.src = img.src;
                     isLightboxOpen = true;
-                } else {
-                    lightbox.style.display = 'none';
-                    isLightboxOpen = false;
                 }
             });
         });
 
         closeButton.addEventListener('click', () => {
-            lightbox.style.display = 'none'; // Hide lightbox
+            lightbox.style.display = 'none';
             isLightboxOpen = false;
         });
 
+        // Resize handler
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
